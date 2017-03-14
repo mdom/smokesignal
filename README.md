@@ -10,6 +10,8 @@ using apache requestlogs. And that's exactly what smokesignal is doing.
     $ smokesignal send "foobar" "http://foo.example.org/topic" "http://bar.example.org/topic"
     $ smokesignal read "/topic" /var/log/apache.log
 
+Currently only combined apache log is supported. Your username is send as referer.
+
 # License
 
 Copyright 2017 Mario Domgoergen <mario@domgoergen.com>
