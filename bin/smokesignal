@@ -1,0 +1,75 @@
+#!/bin/sh
+
+format=combined
+
+die () {
+	printf "%s\n" "$1" >&2
+}
+
+usage () {
+	printf "%s\n" "$program_name"
+	printf "\t%s\n" "read URL LOGFILE" "send URL MSG"
+}
+
+main () {
+	mode="$1"
+	shift
+	case $mode in
+		read | send ) : ;;
+		* ) usage; exit 1 ;;
+	esac	
+	"${mode}_msg" "$@"
+}
+
+send_msg () {
+	msg=$1
+	shift
+	for url;do
+		curl -sS --user-agent "$msg" --referer "${USER}" "$url" >/dev/null
+	done
+}
+
+read_msg () {
+	while getopts ":f:" opt;do
+		case $opt in
+			f ) format="$OPTARG" ;;
+			* ) usage; exit 1 ;;
+		esac
+	done
+	shift $(( OPTIND - 1 ))
+	room="$1"
+	logfile="$2"
+	tail -f "$logfile" | awk '
+		BEGIN {
+			format="'"$format"'"
+			room="'"$room"'"
+			msg_field=12
+			sub(/https?:\/\/[^/]+/,"",room)
+		}
+		{
+			
+			if ( format == "combined" ) {
+				user=$11; time=$4 " " $5; path=$6;
+			} else if (format == "taz" ) {
+				user=$15; time= $1 " " $2 " " $3; path = $11
+				NF--
+				msg_field=16
+			}
+
+			if ( room != path ) next
+
+			sub(/^"/,"",user)
+			sub(/"$/,"",user)
+
+			msg=$msg_field
+			for (i=msg_field+1; i<=NF; i++)
+				msg = msg " " $i
+			sub(/^"/,"",msg)
+			sub(/"$/,"",msg)
+
+			printf "%s %s:\t%s\n", time, user, msg
+		}
+	'
+}
+
+main "$@"
