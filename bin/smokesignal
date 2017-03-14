@@ -8,7 +8,7 @@ die () {
 
 usage () {
 	printf "%s\n" "$program_name"
-	printf "\t%s\n" "read URL LOGFILE" "send URL MSG"
+	printf "\t%s\n" "read URL LOGFILE" "send MSG URL..."
 }
 
 main () {
