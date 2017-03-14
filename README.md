@@ -4,7 +4,7 @@ Chat like xkcd1810
 
 # Description
 
-(xkcd 1810)[https://xkcd.com/1810/] made a reference to someone chatting
+[xkcd 1810](https://xkcd.com/1810/) made a reference to someone chatting
 using apache requestlogs. And that's exactly what smokesignal is doing.
 
     $ smokesignal send "foobar" "http://foo.example.org/topic" "http://bar.example.org/topic"
