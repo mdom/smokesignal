@@ -8,7 +8,7 @@ die () {
 
 usage () {
 	printf "%s\n" "$program_name"
-	printf "\t%s\n" "read URL LOGFILE" "send MSG URL..."
+	printf "\t%s\n" "read URL LOGFILE" "send MSG YOUR_URL REMOTE_URL..."
 }
 
 main () {
@@ -22,10 +22,11 @@ main () {
 }
 
 send_msg () {
-	msg=$1
-	shift
+	msg="$1"
+	your_url="$2"
+	shift 2
 	for url;do
-		curl -sS --user-agent "$msg" --referer "${USER}" "$url" >/dev/null
+		curl -sS --user-agent "$msg" --referer "${your_url}" "$url" >/dev/null
 	done
 }
 

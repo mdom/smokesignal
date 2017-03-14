@@ -10,7 +10,9 @@ using apache requestlogs. And that's exactly what smokesignal is doing.
     $ smokesignal send "foobar" "http://foo.example.org/topic" "http://bar.example.org/topic"
     $ smokesignal read "/topic" /var/log/apache.log
 
-Currently only combined apache log is supported. Your username is send as referer.
+The first url for send is your url endpoint, the remaining urls are
+the recipients. Currently only combined apache log is supported. Your
+username is send as referer.
 
 # License
 
