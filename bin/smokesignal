@@ -44,17 +44,23 @@ read_msg () {
 		BEGIN {
 			format="'"$format"'"
 			room="'"$room"'"
-			msg_field=12
 			sub(/https?:\/\/[^/]+/,"",room)
 		}
 		{
 			
 			if ( format == "combined" ) {
-				user=$11; time=$4 " " $5; path=$6;
+				user=$11; time=$4 " " $5; path=$7;
+				msg_field=12
+			} else if (format == "caddy" ) {
+				user=$10; time=$3 " " $4; path=$6;
+				msg_field=11
 			} else if (format == "taz" ) {
 				user=$15; time= $1 " " $2 " " $3; path = $11
 				NF--
 				msg_field=16
+			} else {
+				print "Unknown format"
+				exit 1
 			}
 
 			if ( room != path ) next
